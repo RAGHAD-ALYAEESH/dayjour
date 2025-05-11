@@ -1,0 +1,24 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="card shadow-sm">
+    <div class="card-header">
+      <h2>Encrypted Data File</h2>
+    </div>
+    <div class="card-body">
+      <p>You can download your encrypted data file below for secure backup or further processing.</p>
+      
+      <div class="text-center">
+        {% if encrypted_file %}
+          <a href="{{ encrypted_file.url }}" class="btn btn-outline-secondary" download>
+            Download Encrypted File
+          </a>
+        {% else %}
+          <p>No encrypted file available at the moment.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

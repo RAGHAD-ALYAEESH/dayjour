@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>{% block title %}Login - DayJour{% endblock %}</title>
+
+  <!-- Favicons -->
+  <link href="{% static 'images/DB2.png' %}" rel="icon">
+  <link href="{% static 'images/DB2.png' %}" rel="apple-touch-icon">
+
+  <!-- Fonts & Styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="{% static 'bizland/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'bizland/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'bizland/css/main.css' %}" rel="stylesheet">
+
+  <style>
+    /* Custom styles for login/signup pages */
+    .auth-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8f9fa;
+    }
+    .auth-card {
+      width: 100%;
+      max-width: 400px;
+      padding: 2rem;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+
+<body class="auth-page">
+
+  <main class="auth-container">
+    {% block content %}
+    <!-- The actual login/sign-up form will go here -->
+    {% endblock %}
+  </main>
+
+  <script src="{% static 'bizland/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+
+</html>

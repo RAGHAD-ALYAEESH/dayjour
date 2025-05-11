@@ -13,6 +13,8 @@ celerybeat-schedule.*
 # Environments 
 .env 
 .venv 
+myvenv/
+venv310/
 env/ 
 venv/ 
 ENV/ 

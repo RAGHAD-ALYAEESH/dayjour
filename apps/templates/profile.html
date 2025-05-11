@@ -1,0 +1,33 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>User Profile</h2>
+  <hr>
+
+  <div class="card shadow-sm">
+    <div class="card-body text-center">
+
+      <!-- Profile Picture -->
+      {% if user.profile and user.profile.image %}
+        <img src="{{ user.profile.image.url }}" alt="Profile Picture" class="rounded-circle mb-3" width="150" height="150" style="object-fit: cover;">
+      {% else %}
+        <img src="https://via.placeholder.com/150" alt="Default Profile Picture" class="rounded-circle mb-3" width="150" height="150">
+      {% endif %}
+
+      <!-- User Info -->
+      <h4>{{ user.username }}</h4>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Subscription:</strong> {{ user.profile.get_subscription_type_display  }}</p>
+      <p><strong>Joined:</strong> {{ user.date_joined|date:"F d, Y" }}</p>
+
+      <!-- Action Buttons -->
+      <div class="mt-4">
+        <a href="{% url 'account_settings' %}" class="btn btn-primary me-2">Edit Profile</a>
+        <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

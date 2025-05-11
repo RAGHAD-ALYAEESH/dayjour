@@ -1,0 +1,111 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="card shadow-sm">
+    <div class="card-header">
+      <h2>Create a New Collaboration</h2>
+    </div>
+    <div class="card-body">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+      <form method="POST" action="{% url 'new_collaboration' %}">
+        {% csrf_token %}
+
+        <!-- Collaboration Name -->
+        <div class="mb-3">
+          <label for="collab_name" class="form-label">Collaboration Name</label>
+          <input type="text" class="form-control" id="collab_name" name="collab_name" required>
+        </div>
+
+        <!-- Select Companies -->
+        <div class="mb-3">
+          <label for="companies" class="form-label">Select Partner Companies</label>
+          <select multiple class="form-control" id="companies" name="companies">
+            {% for company in companies_list %}
+              <option value="{{ company.id }}">{{ company.get_full_name|default:company.username }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Select Datasets -->
+        <div class="mb-3">
+          <label for="dataset" class="form-label">Select Dataset(s)</label>
+          <select multiple class="form-control" id="dataset" name="dataset">
+            {% for dataset in user_datasets %}
+              <option value="{{ dataset.id }}">{{ dataset.filename }}</option>
+            {% endfor %}
+          </select>
+          <small class="text-muted">Hold Ctrl (Cmd on Mac) to select multiple datasets.</small>
+        </div>
+
+        <!-- Collaboration Objective -->
+        <div class="mb-3">
+          <label for="objective" class="form-label">Collaboration Objective</label>
+          <textarea class="form-control" id="objective" name="objective" rows="3" required></textarea>
+        </div>
+
+        <!-- Duration -->
+        <div class="mb-3">
+          <label for="start_date" class="form-label">Start Date</label>
+          <input type="date" class="form-control" id="start_date" name="start_date">
+
+          <label for="end_date" class="form-label mt-2">End Date</label>
+          <input type="date" class="form-control" id="end_date" name="end_date">
+        </div>
+
+        <!-- Invite a New Company -->
+       <h5 class="mt-4">Invite New Companies</h5>
+<p>If your partner companies are not listed, invite them here.</p>
+
+<div id="new-companies-wrapper">
+  <div class="new-company mb-3 border rounded p-3">
+    <div class="mb-2">
+      <label class="form-label">Company Name</label>
+      <input type="text" name="new_company_name[]" class="form-control" required>
+    </div>
+    <div class="mb-2">
+      <label class="form-label">Company Contact Email</label>
+      <input type="email" name="new_company_email[]" class="form-control" required>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="btn btn-secondary mb-3" onclick="addCompanyField()">+ Add Another Company</button>
+        <!-- Submit -->
+        <button type="submit" class="btn btn-primary">Create Collaboration</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  function addCompanyField() {
+    const wrapper = document.getElementById('new-companies-wrapper');
+    const newCompany = document.createElement('div');
+    newCompany.classList.add('new-company', 'mb-3', 'border', 'rounded', 'p-3', 'position-relative');
+
+    newCompany.innerHTML = `
+      <button type="button" class="btn-close position-absolute top-0 end-0 m-2" onclick="removeCompanyField(this)" aria-label="Close"></button>
+      <div class="mb-2">
+        <label class="form-label">Company Name</label>
+        <input type="text" name="new_company_name[]" class="form-control" required>
+      </div>
+      <div class="mb-2">
+        <label class="form-label">Company Contact Email</label>
+        <input type="email" name="new_company_email[]" class="form-control" required>
+      </div>
+    `;
+
+    wrapper.appendChild(newCompany);
+  }
+
+  function removeCompanyField(button) {
+    button.closest('.new-company').remove();
+  }
+</script>
+{% endblock %}

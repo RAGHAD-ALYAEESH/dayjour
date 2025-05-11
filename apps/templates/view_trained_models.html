@@ -1,0 +1,48 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<div class="container my-5">
+  <h2>View All Trained Models</h2>
+  <p>Below is the list of models you have trained locally. You can view the details or re-train a model as needed.</p>
+
+  <!-- Table of trained models -->
+  <div class="card shadow-sm">
+    <div class="card-header">
+      <h5>Trained Models Overview</h5>
+    </div>
+    <div class="card-body">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Dataset</th>
+            <th>Model Parameters</th>
+            <th>Training Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for model in trained_models %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ model.dataset.name }}</td>
+            <td>{{ model.model_parameters }}</td>
+            <td>{{ model.status }}</td>
+            <td>
+              <a href="{% url 'view_model_details' model.id %}" class="btn btn-info btn-sm">View Details</a>
+              <!-- Add other actions like re-training if needed -->
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5" class="text-center">No models have been trained yet.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <p class="mt-4">Need help? <a href="#">Contact Support</a></p>
+</div>
+{% endblock %}

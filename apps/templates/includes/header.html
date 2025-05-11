@@ -1,0 +1,84 @@
+{% load static %}
+
+<header id="header" class="header sticky-top">
+  <div class="branding d-flex align-items-center">
+    <div class="container d-flex justify-content-between align-items-center">
+      <!-- Branding -->
+      <a href="{% url 'dashboard' %}" class="logo d-flex align-items-center">
+        <img src="{% static 'images/DB2.png' %}" alt="Dayjour Logo" width="30" height="30">
+        <h1 class="sitename ms-2">DayJour</h1>
+      </a>
+
+      {% if user.is_authenticated %}
+      <!-- Navigation for logged-in users -->
+      <nav id="navmenu" class="navbar navbar-expand-lg">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+          aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" 
+                 href="{% url 'dashboard' %}">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.url_name == 'uploaded_data' %}active{% endif %}" 
+                 href="{% url 'uploaded_data' %}">My Data</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.url_name == 'upload_data' %}active{% endif %}" 
+                 href="{% url 'upload_data' %}">Upload Data</a>
+            </li>
+          </ul>
+
+          <!-- User Profile Dropdown -->
+          <ul class="navbar-nav mb-2 mb-lg-0">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                {% if user.is_authenticated and user.profile.image %}
+                <img src="{{ user.profile.image.url }}" alt="Profile Picture" width="30" height="30" class="rounded-circle" style="object-fit: cover; margin-right: 8px;">
+              {% else %}
+                <i class="bi bi-person-circle"></i>
+              {% endif %}
+              {{ user.username }}
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'account_settings' %}">Account Settings</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Logout</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      {% else %}
+      <!-- Navigation for guests (not logged in) -->
+      <nav id="navmenu" class="navbar navbar-expand-lg">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+          aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.url_name == 'user_login' %}active{% endif %}" href="{% url 'user_login' %}">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.url_name == 'signin_view' %}active{% endif %}" href="{% url 'signin_view' %}">Sign Up</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      {% endif %}
+
+    </div>
+  </div>
+</header>

@@ -1,0 +1,12 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Accept Invitation</h2>
+    <p>You are about to accept an invitation for {{ invite.email }}.</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success">Accept Invitation</button>
+    </form>
+</div>
+{% endblock %}

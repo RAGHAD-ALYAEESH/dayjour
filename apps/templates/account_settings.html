@@ -1,0 +1,53 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Account Settings</h2>
+  <hr>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+  
+    <!-- صورة الملف الشخصي الحالية -->
+    <div class="mb-3 text-center">
+      {% if user.profile.image %}
+        <img src="{{ user.profile.image.url }}" alt="Profile Image" width="150" height="150" class="rounded-circle mb-2" style="object-fit: cover;">
+      {% else %}
+        <img src="https://via.placeholder.com/150" alt="Default Profile Image" width="150" height="150" class="rounded-circle mb-2">
+      {% endif %}
+    </div>
+  
+    <!-- حقل تغيير الصورة -->
+    <div class="mb-3">
+      <label for="id_image" class="form-label">Change Profile Picture</label>
+      {{ image_form.image }}
+    </div>
+  
+    <!-- حقول المستخدم -->
+    <div class="mb-3">
+      <label for="username" class="form-label">Username</label>
+      <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}" required>
+    </div>
+  
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+    </div>
+  
+    <div class="mb-3">
+      <label for="password" class="form-label">New Password</label>
+      <input type="password" class="form-control" id="password" name="password">
+      <small class="form-text text-muted">Leave blank to keep your current password.</small>
+    </div>
+  
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+  </form>
+  
+</div>
+{% endblock %}

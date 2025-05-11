@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invitation</title>
+</head>
+<body>
+    <h2>Hello {{ company_name }}!</h2>
+    <p>You have been invited to join a collaboration platform by <strong>{{ sender_name }}</strong>.</p>
+    <p>Please respond before <b>{{ expiration_date }}</b>.</p>
+
+    <a href="{{ accept_url }}" style="padding:10px 20px; background:green; color:white; text-decoration:none; margin-right:10px;">Accept Invitation</a>
+    <a href="{{ reject_url }}" style="padding:10px 20px; background:red; color:white; text-decoration:none;">Reject Invitation</a>
+
+    <p>If you did not request this, you can ignore this email.</p>
+</body>
+</html>

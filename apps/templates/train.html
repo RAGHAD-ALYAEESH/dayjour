@@ -1,0 +1,53 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<div class="container my-5">
+  <h2>Train Local Model</h2>
+  <p>Select the dataset and model parameters to start training your local model.</p>
+  
+  <form action="{% url 'train_local_model' %}" method="post">
+    {% csrf_token %}
+
+    <!-- Select Dataset -->
+    <div class="mb-3">
+      <label for="dataset" class="form-label">Select Dataset</label>
+      <select class="form-select" id="dataset" name="dataset" required>
+        <option value="">Choose dataset...</option>
+        {% for dataset in datasets %}
+          <option value="{{ dataset.id }}">{{ dataset.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <!-- Select Model Parameters -->
+    <div class="mb-3">
+      <label for="modelParameters" class="form-label">Select Model Parameters</label>
+      <select class="form-select" id="modelParameters" name="modelParameters" required>
+        <option value="">Choose parameters...</option>
+        <option value="param1">Parameter Set 1</option>
+        <option value="param2">Parameter Set 2</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Train Model</button>
+  </form>
+
+  <!-- Show message after training finishes -->
+  {% if message %}
+    <div class="alert alert-info mt-3">{{ message }}</div>
+
+    <!-- Ask to send local model to global model -->
+    <div class="mt-4 p-3 border rounded bg-light">
+      <h5>Send Local Model to Global Training</h5>
+      <p>Your local model training is complete. Would you like to contribute your model weights to improve the global model for your collaboration?</p>
+      
+      <form action="{% url 'send_to_global_model' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="dataset" value="{{ selected_dataset }}">
+        <input type="hidden" name="modelParameters" value="{{ selected_parameters }}">
+        <button type="submit" class="btn btn-success">Send to Global Model</button>
+      </form>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

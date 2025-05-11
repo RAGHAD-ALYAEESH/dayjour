@@ -1,0 +1,13 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+  <h2>SHAP Insights for {{ collaboration.name }}</h2>
+  {% if report.shap_plot %}
+    <img src="{{ report.shap_plot.url }}" alt="SHAP plot" class="img-fluid" />
+  {% else %}
+    <p>No SHAP plot available.</p>
+  {% endif %}
+</div>
+{% endblock %}

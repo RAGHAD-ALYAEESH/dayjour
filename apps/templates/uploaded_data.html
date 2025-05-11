@@ -1,0 +1,55 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="card shadow-sm">
+    <div class="card-header">
+      <h2>My Uploaded Data</h2>
+    </div>
+    <div class="card-body">
+      <p>Below is a list of all your uploaded data files. Click on any file to view details or manage your uploads.</p>
+      
+      {% if uploaded_files %}
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <tr>
+            <td>{{ file.filename }}</td>
+            <td>{{ file.uploaded_date }}</td>
+            <td>{{ file.size }}</td>
+            <td>
+            
+            <th>Collaboration Group</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for file in uploaded_files %}
+          <tr>
+            <td>{{ file.filename }}</td>
+            <td>{{ file.uploaded_date }}</td>
+            <td>{{ file.size }}</td>
+            <td>
+              {% if file.collaboration_groups.all %}
+                {% for group in file.collaboration_groups.all %}
+                  {{ group.name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+              {% else %}
+                N/A
+              {% endif %}
+              <td>
+                <a href="{% url 'delete_uploaded_file' file.pk %}" class="btn btn-sm btn-danger"
+                   onclick="return confirm('Are you sure you want to delete this file?');">
+                  Delete
+                </a>
+              </td>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>No uploaded data found. Please upload a data file to see it listed here.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="card shadow-sm">
+    <div class="card-header">
+      <h3>Select Encrypted Dataset for "{{ collaboration.name }}"</h3>
+    </div>
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="selected_file">Your Encrypted Datasets:</label>
+          <select name="selected_file" id="selected_file" class="form-control" required>
+            {% for dataset in user_datasets %}
+              <option value="{{ dataset.id }}">{{ dataset.file.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="d-flex mt-3 gap-2">
+          <button type="submit" class="btn btn-success">Attach to Collaboration</button>
+          <a href="{% url 'collaboration_detail' pk=collaboration.id %}" class="btn btn-secondary">Back to Collaboration Detail</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

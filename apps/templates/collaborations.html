@@ -1,0 +1,73 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h2>My Collaborations</h2>
+      <a href="{% url 'new_collaboration' %}" class="btn btn-success btn-sm">+ New Collaboration</a>
+    </div>
+
+    <div class="card-body">
+      <p>Here is a list of your active collaborations. Click "Read More" to view details about each collaboration.</p>
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+
+      {% if collaborations %}
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr>
+            <th>Collaboration Name</th>
+            <th>Members</th>
+            <th>Data Used</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for collaboration in collaborations %}
+          <tr>
+            <td>{{ collaboration.name }}</td>
+            <td>
+              {% for member in collaboration.members.all|slice:":3" %}
+                {{ member.username }}{% if not forloop.last %}, {% endif %}
+              {% endfor %}
+              {% if collaboration.members.count > 3 %}
+                +{{ collaboration.members.count|add:"-3" }} more
+              {% endif %}
+            </td>
+            <td>
+              {% if collaboration.dataset.exists %}
+                <ul class="mb-0">
+                  {% for ds in collaboration.dataset.all %}
+                    <li>{{ ds.file.name }}</li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <em>No datasets linked.</em>
+              {% endif %}
+            </td>
+            <td>
+              <a href="{% url 'collaboration_detail' collaboration.pk %}" class="btn btn-primary btn-sm">Read More</a>
+              <form action="{% url 'delete_collaboration' collaboration.pk %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this collaboration?');">Delete</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div class="text-center my-4">
+        <p>No active collaborations found.</p>
+        <a href="{% url 'new_collaboration' %}" class="btn btn-outline-primary">Start New Collaboration</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

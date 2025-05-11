@@ -1,0 +1,61 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+
+  <!-- Django messages -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="card shadow-sm">
+    <div class="card-header">
+      <h2>{{ collaboration.name }}</h2>
+    </div>
+    <div class="card-body">
+      <p><strong>Description:</strong> {{ collaboration.description|default:"No description provided." }}</p>
+      <p><strong>Start Date:</strong> {{ collaboration.start_date|default:"Not set" }}</p>
+      <p><strong>End Date:</strong> {{ collaboration.end_date|default:"Not set" }}</p>
+
+      <p><strong>Datasets:</strong></p>
+      {% if collaboration.dataset.all %}
+        <ul>
+          {% for ds in collaboration.dataset.all %}
+            <li>{{ ds.file.name }} - <em>{{ ds.get_status_display }}</em></li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No datasets linked.</p>
+      {% endif %}
+
+      <!-- Upload button -->
+      <a href="{% url 'upload_collaboration_data' collaboration.pk %}" class="btn btn-success btn-sm mb-3">Select Encrypted Dataset</a>
+
+      <!-- Conditionally show train button -->
+      {% if has_encrypted_data %}
+        <a href="{% url 'train_model' collaboration.pk %}" class="btn btn-primary btn-sm mb-3">Train Data</a>
+      {% endif %}
+
+      <!-- Conditionally show view insights -->
+      {% if has_analysis %}
+        <a href="{% url 'view_insights' collaboration.pk %}" class="btn btn-info btn-sm mb-3">View Insights</a>
+      {% endif %}
+
+      <hr>
+      <p><strong>Members:</strong>
+        {% for member in collaboration.members.all %}
+          {{ member.username }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+      </p>
+
+      <a href="{% url 'collaborations' %}" class="btn btn-secondary">Back to Collaborations</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
